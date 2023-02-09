@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
           href="https://stijndv.com/fonts/Eudoxus-Sans.css"
         />
       </head>
-      <body>{children}</body>
+      <body className="bg-[#1A232E] overflow-hidden">{children}</body>
     </html>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Nextjs",
+  "name": "Portfoilo",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,8 +15,10 @@
   },
   "dependencies": {
     "eslint-config-next": "13.1.6",
+    "framer-motion": "^9.0.2",
     "next": "13.1.6",
-    "prettier": "^2.8.3",
+    "prettier": "^2.8.4",
+    "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-redux": "^8.0.5"
   },
@@ -31,7 +33,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
     "postcss": "^8.4.21",
-    "prettier": "2.8.3",
-    "tailwindcss": "^3.2.4"
+    "prettier": "2.8.4",
+    "tailwindcss": "^3.2.6"
   }
 }
