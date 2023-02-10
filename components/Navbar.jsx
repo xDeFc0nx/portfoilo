@@ -30,17 +30,41 @@ const Navbar = () => {
           <Link href="#About-Us">About Us</Link>
           <Link href="#Our-Services">Our Services</Link>
         </div>
-        <div className=" hidden md:flex md:order-2 gap-10">
-          <Link href="https://github.com/xDeFc0nx">
-            <Image src={github} width={30} height={30} />
-          </Link>
-          <Link href="https://github.com/xDeFc0nx">
-            <Image src={discord} width={30} height={30} />
-          </Link>
-          <Link href="https://github.com/xDeFc0nx">
-            <Image src={instangram} width={30} height={30} />
-          </Link>
-        </div>
+        <motion.div className=" hidden md:flex md:order-2 gap-10">
+          <motion.div
+            whileHover={{
+              scale: 1.2,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Link href="https://github.com/xDeFc0nx">
+              <Image src={github} width={30} height={30} />
+            </Link>
+          </motion.div>
+          <motion.div
+            whileHover={{
+              scale: 1.2,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Link href="https://github.com/xDeFc0nx">
+              <Image src={discord} width={30} height={30} />
+            </Link>
+          </motion.div>
+          <motion.div
+            whileHover={{
+              scale: 1.2,
+              transition: { duration: 0.2 },
+            }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Link href="https://github.com/xDeFc0nx">
+              <Image src={instangram} width={30} height={30} />
+            </Link>
+          </motion.div>
+        </motion.div>
 
         <button
           type="button"
