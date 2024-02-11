@@ -1,5 +1,5 @@
 import { FC } from "react";
-
+import React from "react";
 export const Navbar: FC = () => {
   return (
     <div>
