@@ -23,7 +23,7 @@ type Technologies struct {
 }
 
 type User struct {
-	gorm.Model
+	ID       uint   `gorm:"primarykey"`
 	Username string `gorm:"type:varchar(50);unique" json:"username"`
 	Password string `json:"-"`
 }
