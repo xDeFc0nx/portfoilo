@@ -11,29 +11,29 @@ import (
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
-func CreateUser(c *fiber.Ctx) error {
+// func CreateUser(c *fiber.Ctx) error {
 
-	db, nil := DB.Connect()
+// 	db, nil := DB.Connect()
 
-	user := new(models.User)
-	if err := c.BodyParser(user); err != nil {
-		return c.Status(400).JSON(err.Error())
-	}
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to hash password"})
-	}
-	user.Password = string(hashedPassword)
+// 	user := new(models.User)
+// 	if err := c.BodyParser(user); err != nil {
+// 		return c.Status(400).JSON(err.Error())
+// 	}
+// 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+// 	if err != nil {
+// 		return c.Status(500).JSON(fiber.Map{"error": "Failed to hash password"})
+// 	}
+// 	user.Password = string(hashedPassword)
 
-	token, exp, err := Create_JWT_Token(*user)
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to create JWT token"})
+// 	token, exp, err := Create_JWT_Token(*user)
+// 	if err != nil {
+// 		return c.Status(500).JSON(fiber.Map{"error": "Failed to create JWT token"})
 
-	}
+// 	}
 
-	db.Create(user)
-	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
-}
+// 	db.Create(user)
+// 	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
+// }
 
 func Create_JWT_Token(user models.User) (string, int64, error) {
 	exp := time.Now().Add(time.Minute * 30).Unix()

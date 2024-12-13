@@ -1,15 +1,17 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Projects struct {
 	gorm.Model
-	Image        string
-	Title        string `json:"name"`
+	Image        string `json:"image"`
+	Title        string `json:"Title"`
 	Description  string `json:"description"`
 	Libraries    string `json:"libraries"`
 	Technologies string `json:"technologies"`
-	Details      string
+	Details      string `json:"details"`
 }
 
 type User struct {

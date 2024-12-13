@@ -14,7 +14,9 @@ import (
 func Setup_Routes(app *fiber.App) {
 
 	app.Post("api/Login", routes.Login_func)
-
+	app.Get("api/getprojects", routes.Get_projects)
+	app.Post("api/createproject", routes.Create_Project)
+	app.Post("api/deleteproject:", routes.Delete_Project)
 }
 func main() {
 
@@ -34,6 +36,8 @@ func main() {
 	private.Get("/", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"success": true, "path": "private"})
 	})
+
+	// private.Post("api/createproject", routes.Create_Project)
 
 	public := app.Group("/public")
 	public.Get("/", func(c *fiber.Ctx) error {
