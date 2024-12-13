@@ -12,7 +12,7 @@ import (
 )
 
 func Setup_Routes(app *fiber.App) {
-	app.Post("api/CreateUser", routes.CreateUser)
+
 	app.Post("api/Login", routes.Login_func)
 
 }
