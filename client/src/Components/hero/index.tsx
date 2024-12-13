@@ -1,11 +1,7 @@
 import React from "react";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
-import {
-  atomOneDark,
-  atomOneDarkReasonable,
-  docco,
-} from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 function index() {
   const codeString = `
@@ -31,7 +27,7 @@ function index() {
       <div className="bg-[#2565E1] -z-1 w-[20rem] h-[30rem] rounded-full blur-[10rem] fixed  left-[15rem] -translate-y-1/2" />
       <div className="flex">
         <div className="flex flex-col">
-          <span className="sm:text-sm md:text-md lg:text-[50px] text-white z-auto flex pt-[15rem] ml-24 ">
+          <span className="sm:text-sm md:text-[30px] lg:text-[50px] text-white z-auto flex text-pretty pt-[15rem] ml-24 ">
             Transforming ideas into reality <br />
             where vision meets precision
           </span>
@@ -43,13 +39,14 @@ function index() {
 
         <div className="ml-24 pt-52 ">
           <div className="rounded-xl w-[40rem] overflow-hidden bg-[#1a232e]/10 backdrop-blur-lg border border-white/30  p-4 text-md ">
-            <div className=" flex justify-between pb-3 pt-6 px-6 ">
+            <div className=" flex justify-between pb-6 pt-3  ">
               <div className=" flex space-x-2">
                 <div className="w-4 h-4 rounded-full border-2 border-white	"></div>
                 <div className="w-4 h-4 rounded-full border-2 border-white	"></div>
                 <div className="w-4 h-4 rounded-full border-2 border-white	"></div>
               </div>
             </div>
+            <div className="w-full h-1 border-2 bg-white	"></div>
             <SyntaxHighlighter
               language="javascript"
               style={atomOneDark}
