@@ -46,7 +46,7 @@ function index() {
                 <div className="w-4 h-4 rounded-full border-2 border-white	"></div>
               </div>
             </div>
-            <div className="w-full h-1 border-2 bg-white	"></div>
+            <div className="w-full h-[1] border-2  border-white/30 	"></div>
             <SyntaxHighlighter
               language="javascript"
               style={atomOneDark}
