@@ -23,12 +23,12 @@ function index() {
       <div className="bg-[#5B5CB4] -z-1 w-[45rem] h-[45rem] rounded-full blur-[10rem] fixed left-[30rem] -translate-y-1/2" />
       <div className="bg-[#D225E1] -z-1 w-[20rem] h-[20rem] rounded-full blur-[10rem] fixed left-[10rem] -translate-y-1/2" />
       <div className="bg-[#2565E1] -z-1 w-[20rem] h-[20rem] rounded-full blur-[10rem] fixed left-[15rem] -translate-y-1/2" />
-      <div className="flex flex-col justify-center max-w-2xl m-auto md:max-w-4xl xl:max-w-[1280px] xl:grid xl:grid-cols-3 gap-16 xl:gap-24 min-h-screen xl:h-screen items-center px-8">
+      <div className="flex flex-col justify-center max-w-2xl m-auto md:max-w-4xl xl:max-w-[1280px] xl:grid xl:grid-cols-3 gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px">
         <div className="flex flex-col xl:col-span-2">
-          <span className="text-[48px] leading-[54px] xl:text-[54px] xl:leading-[64px] font-semibold text-center xl:text-left text-white">
+          <span className="text-[48px] leading-[45px] xl:text-[45px] xl:leading-[64px] font-semibold text-center xl:text-left text-white">
             Transforming ideas into reality: where vision meets precision
           </span>
-          <span className="text-[28px] leading-[35px] xl:text-[32px] xl:leading-[48px] pt-6 text-gray-400 text-center xl:text-left">
+          <span className="text-[28px] leading-[35px] xl:text-[32px] xl:leading-[38px] pt-6 text-gray-400 text-center xl:text-left">
             Nehar Tale, your hero programmer and web developer, leading us to
             victory in the war against unmaintainable code.
           </span>
