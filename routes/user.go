@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 
+	"github.com/xDeFc0nx/portofoilo/handlers"
 	DB "github.com/xDeFc0nx/portofoilo/handlers"
 	"github.com/xDeFc0nx/portofoilo/models"
 )
@@ -35,19 +35,6 @@ import (
 // 	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
 // }
 
-func Create_JWT_Token(user models.User) (string, int64, error) {
-	exp := time.Now().Add(time.Minute * 30).Unix()
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["user_id"] = user.ID
-	claims["exp"] = exp
-	t, err := token.SignedString([]byte("13b4014a9f523889"))
-	if err != nil {
-		return "", 0, err
-	}
-	return t, exp, nil
-}
-
 func Login_func(c *fiber.Ctx) error {
 
 	user := new(models.User)
@@ -70,10 +57,31 @@ func Login_func(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(401).JSON(fiber.Map{"error": "Invalid username or password"})
 	}
-	token, exp, err := Create_JWT_Token(foundUser)
+	token, exp, err := handlers.Create_JWT_Token(foundUser)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Failed to create JWT token"})
 	}
-	return c.JSON(fiber.Map{"user": foundUser, "token": token, "exp": exp})
+
+	cookie := fiber.Cookie{
+		Name:     "jwt-token",
+		Value:    token,
+		Expires:  time.Unix(exp, 0),
+		HTTPOnly: true,
+	}
+	c.Cookie(&cookie)
+	return c.JSON(fiber.Map{"message": "Success"})
+
+}
+
+func Logout_func(c *fiber.Ctx) error {
+	cookie := fiber.Cookie{
+		Name:     "jwt-token",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HTTPOnly: true,
+	}
+	c.Cookie(&cookie)
+
+	return c.JSON(fiber.Map{"message": "Success"})
 
 }
