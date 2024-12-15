@@ -4,10 +4,8 @@ import Aboutme from "./Components/aboutme";
 function App() {
   return (
     <>
-      <div>
-        <Hero />
-        <Aboutme />
-      </div>
+      <Hero />
+      <Aboutme />
     </>
   );
 }
