@@ -11,7 +11,8 @@ function index() {
         return (
             <div>
                 <h1>
-                Need a hero? I'm the one you deserve! (for better or mostly worse)
+                Need a hero? I'm the one you deserve!
+                 (for better or mostly worse)
                 </h1>
             </div>
         );
@@ -19,16 +20,19 @@ function index() {
 `;
 
   return (
-    <div>
-      <div className="bg-[#5B5CB4] -z-1 w-[45rem] h-[45rem] rounded-full blur-[10rem] fixed left-[30rem] -translate-y-1/2" />
-      <div className="bg-[#D225E1] -z-1 w-[20rem] h-[20rem] rounded-full blur-[10rem] fixed left-[10rem] -translate-y-1/2" />
-      <div className="bg-[#2565E1] -z-1 w-[20rem] h-[20rem] rounded-full blur-[10rem] fixed left-[15rem] -translate-y-1/2" />
-      <div className="flex flex-col justify-center max-w-2xl m-auto md:max-w-4xl xl:max-w-[1280px] xl:grid xl:grid-cols-3 gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px">
-        <div className="flex flex-col xl:col-span-2">
-          <span className="text-[48px] leading-[45px] xl:text-[45px] xl:leading-[64px] font-semibold text-center xl:text-left text-white">
-            Transforming ideas into reality: where vision meets precision
+    <>
+      <div className="absolute w-full justify-center min-h-96">
+        <div className="bg-[#5B5CB4] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[8rem] xl:blur-[12rem] absolute left-1/3 -translate-y-1/2" />
+        <div className="bg-[#D225E1] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[8rem] xl:blur-[12rem] absolute left-1/2 -translate-y-1/2" />
+        <div className="bg-[#2565E1] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[8rem] xl:blur-[12rem] absolute left-1/4 -translate-y-1/2" />
+      </div>
+      <div className="flex flex-col justify-center max-w-2xl m-auto md:max-w-4xl xl:max-w-[1280px] xl:grid xl:grid-cols-3 gap-16 xl:gap-1 min-h-[85%] xl:h-4/5 items-center px">
+        <div className="flex flex-col xl:col-span-2 xl:pt-0 pt-40 ">
+          <span className="text-[35px] leading-[35px] xl:text-[45px] xl:leading-[64px] font-semibold text-center xl:text-left text-white">
+            Transforming <span className="text-[#D225E1]"> ideas </span>into
+            reality: where vision meets precision
           </span>
-          <span className="text-[28px] leading-[35px] xl:text-[32px] xl:leading-[38px] pt-6 text-gray-400 text-center xl:text-left">
+          <span className="text-[18px] leading-[25px] xl:text-[22px] xl:leading-[38px] pt-6 text-gray-400 text-center xl:text-left">
             Nehar Tale, your hero programmer and web developer, leading us to
             victory in the war against unmaintainable code.
           </span>
@@ -39,7 +43,6 @@ function index() {
             <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
             <div className="w-4 h-4 rounded-full bg-green-500"></div>
           </div>
-          <div className="bg-[#CFECFD] -z-1 w-[20rem] h-[20rem] rounded-full blur-[10rem] fixed left-[10rem] -translate-y-1/2" />
           <div className="flex flex-col gap-2">
             <SyntaxHighlighter
               language="javascript"
@@ -51,7 +54,7 @@ function index() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
