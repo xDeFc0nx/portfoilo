@@ -2,7 +2,7 @@ import pfp from "../../assets/profile.jpeg";
 function index() {
   return (
     <>
-      <div className="flex flex-col  max-w-2xl m-auto md:max-w-4xl xl:max-w-96 xl:grid  min-h-screen xl:h-screen ">
+      <div className=" max-w-2xl m-auto md:max-w-4xl xl:max-w-[1280px] gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px  ">
         <div className="flex flex-col xl:col-span-1 items-center pt-24 lx:pt-0   ">
           <span className="text-[30px] leading-[30px] xl:text-[40px] xl:leading-[60px] pb-5  text-center xl:text-left  text-white">
             About me
