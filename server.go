@@ -18,7 +18,7 @@ func Setup_Routes(app *fiber.App) {
 	app.Post("api/logout", routes.Logout_func)
 	app.Get("api/getprojects", routes.Get_projects)
 	app.Post("api/createproject", routes.Create_Project)
-	app.Post("api/deleteproject:", routes.Delete_Project)
+	app.Post("api/deleteproject/:id", routes.Delete_Project)
 }
 func main() {
 

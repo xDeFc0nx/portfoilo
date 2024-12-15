@@ -6,15 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 
-	DB "github.com/xDeFc0nx/portofoilo/handlers"
+	"github.com/xDeFc0nx/portofoilo/handlers"
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
 func Get_projects(c *fiber.Ctx) error {
-	db, err := DB.Connect()
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to connect to database"})
-	}
+	db := handlers.GetDB()
 
 	var projects []models.Projects
 
@@ -34,10 +31,7 @@ func Create_Project(c *fiber.Ctx) error {
 	}
 	claims := token.Claims
 
-	db, err := DB.Connect()
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to connect to database"})
-	}
+	db := handlers.GetDB()
 
 	project := new(models.Projects)
 	if err := c.BodyParser(project); err != nil {
@@ -58,15 +52,14 @@ func Delete_Project(c *fiber.Ctx) error {
 	if err != nil || !token.Valid {
 		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
 	}
-	claims := token.Claims
 
-	db, err := DB.Connect()
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to connect to database"})
-	}
+	db := handlers.GetDB()
 
 	id := c.Params("id")
+	if id == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "Project ID is required"})
+	}
 	var project models.Projects
 	db.Where("id =?", id).Delete(&project)
-	return c.JSON(fiber.Map{"message": "Project deleted!", "claims": claims})
+	return c.JSON(fiber.Map{"message": "Project deleted!"})
 }

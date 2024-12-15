@@ -11,6 +11,8 @@ import (
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
+var db *gorm.DB
+
 func Connect() (*gorm.DB, error) {
 
 	err := godotenv.Load(".env")
@@ -20,7 +22,7 @@ func Connect() (*gorm.DB, error) {
 	}
 
 	dsn := os.Getenv("MYSQL_CONFIG")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 
 		return nil, err
@@ -38,4 +40,7 @@ func Connect() (*gorm.DB, error) {
 	logger.Success("Successfully Migrated!")
 
 	return db, nil
+}
+func GetDB() *gorm.DB {
+	return db
 }
