@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/joho/godotenv"
+	"github.com/xDeFc0nx/logger-go-pkg"
 
 	DB "github.com/xDeFc0nx/portofoilo/handlers"
 	"github.com/xDeFc0nx/portofoilo/routes"
@@ -21,8 +22,16 @@ func Setup_Routes(app *fiber.App) {
 }
 func main() {
 
-	godotenv.Load(".env")
-	DB.Connect()
+	err := godotenv.Load(".env")
+	if err != nil {
+		logger.Error("Error loading.env file")
+	}
+	_, err1 := DB.Connect()
+	if err1 != nil {
+		logger.Error("Failed to connect to database")
+
+	}
+
 	PORT := os.Getenv("PORT")
 
 	app := fiber.New()
@@ -33,6 +42,9 @@ func main() {
 	}))
 	Setup_Routes(app)
 
-	app.Listen(PORT)
+	err2 := app.Listen(PORT)
+	if err2 != nil {
+		logger.Error("Error listening")
+	}
 
 }

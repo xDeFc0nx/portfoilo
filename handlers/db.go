@@ -13,7 +13,11 @@ import (
 
 func Connect() (*gorm.DB, error) {
 
-	godotenv.Load(".env")
+	err := godotenv.Load(".env")
+	if err != nil {
+		logger.Error("Error loading.env file")
+		os.Exit(1)
+	}
 
 	dsn := os.Getenv("MYSQL_CONFIG")
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})

@@ -6,12 +6,18 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
+	"github.com/xDeFc0nx/logger-go-pkg"
 
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
 func Create_JWT_Token(user models.User) (string, int64, error) {
-	godotenv.Load(".env")
+	err := godotenv.Load(".env")
+	if err != nil {
+		logger.Error("Error loading.env file")
+		os.Exit(1)
+	}
+
 	SECRET_KEY := os.Getenv("SECRET_KEY")
 	exp := time.Now().Add(time.Minute * 30).Unix()
 	token := jwt.New(jwt.SigningMethodHS256)
