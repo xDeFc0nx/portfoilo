@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,16 +12,12 @@ import (
 )
 
 func Get_projects(c *fiber.Ctx) error {
-	db := handlers.GetDB()
-
 	var projects []models.Projects
 
-	db.Find(&projects)
+	handlers.GetDB().Find(&projects)
 	return c.JSON(fiber.Map{"Projects": projects})
 }
-
 func Create_Project(c *fiber.Ctx) error {
-
 	cookie := c.Cookies("jwt-token")
 
 	token, err := jwt.ParseWithClaims(cookie, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -31,15 +28,68 @@ func Create_Project(c *fiber.Ctx) error {
 	}
 	claims := token.Claims
 
-	db := handlers.GetDB()
-
-	project := new(models.Projects)
-	if err := c.BodyParser(project); err != nil {
-		return c.Status(400).JSON(err.Error())
+	file, err := c.FormFile("logo")
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid file logo", "details": err.Error()})
 	}
 
-	db.Create(project)
-	return c.JSON(fiber.Map{"message": "Project created!", "claims": claims})
+	// Generate a unique filename to avoid collisions
+	filePath := "client/public/assets/" + file.Filename
+	if err := c.SaveFile(file, filePath); err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to save file", "details": err.Error()})
+	}
+
+	project := new(models.Projects)
+	form, err := c.MultipartForm() // This gets all the multipart form data
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Failed to parse multipart form"})
+	}
+
+	// Get Technologies[] values as slice of strings
+	technologies := form.Value["Technologies[]"] // This is a slice of strings
+	if len(technologies) > 0 {
+		project.Technologies = technologies
+	}
+
+	Libraries := form.Value["Libraries[]"] // This is a slice of strings
+	if len(Libraries) > 0 {
+		project.Libraries = Libraries
+	}
+	Images := form.Value["Images[]"] // This is a slice of strings
+	if len(Images) > 0 {
+		project.Images = Images
+	}
+
+	// Handle Images[] (file upload)
+	var images []string
+	imageFiles, ok := form.File["Images[]"]
+	if ok {
+		for _, imageFile := range imageFiles {
+			// Save each image file with a unique filename
+			imagePath := "client/public/assets/" + imageFile.Filename
+			if err := c.SaveFile(imageFile, imagePath); err != nil {
+				return c.Status(500).JSON(fiber.Map{"error": "Failed to save image file", "details": err.Error()})
+			}
+			// Store image path in the images slice
+			images = append(images, imagePath)
+		}
+	}
+	project.Images = images
+
+	// Assign the image to project
+	project.Logo = file.Filename
+
+	if err := c.BodyParser(project); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid project data", "details": err.Error()})
+	}
+	fmt.Println("Technologies:", project.Technologies)
+
+	// Create project in database
+	if err := handlers.GetDB().Create(project).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to create project", "details": err.Error()})
+	}
+
+	return c.JSON(fiber.Map{"message": "Project created successfully!", "claims": claims})
 }
 
 func Delete_Project(c *fiber.Ctx) error {
@@ -53,13 +103,11 @@ func Delete_Project(c *fiber.Ctx) error {
 		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
 	}
 
-	db := handlers.GetDB()
-
 	id := c.Params("id")
 	if id == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "Project ID is required"})
 	}
 	var project models.Projects
-	db.Where("id =?", id).Delete(&project)
+	handlers.GetDB().Where("id =?", id).Delete(&project)
 	return c.JSON(fiber.Map{"message": "Project deleted!"})
 }

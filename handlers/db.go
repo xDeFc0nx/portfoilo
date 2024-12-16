@@ -5,7 +5,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/xDeFc0nx/logger-go-pkg"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
 	"github.com/xDeFc0nx/portofoilo/models"
@@ -21,8 +21,8 @@ func Connect() (*gorm.DB, error) {
 		os.Exit(1)
 	}
 
-	dsn := os.Getenv("MYSQL_CONFIG")
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := os.Getenv("DB_CONFIG")
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 
 		return nil, err

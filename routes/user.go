@@ -7,13 +7,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
-	DB "github.com/xDeFc0nx/portofoilo/handlers"
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
 // func CreateUser(c *fiber.Ctx) error {
-
-// 	db, nil := DB.Connect()
 
 // 	user := new(models.User)
 // 	if err := c.BodyParser(user); err != nil {
@@ -25,13 +22,13 @@ import (
 // 	}
 // 	user.Password = string(hashedPassword)
 
-// 	token, exp, err := Create_JWT_Token(*user)
+// 	token, exp, err := handlers.Create_JWT_Token(*user)
 // 	if err != nil {
 // 		return c.Status(500).JSON(fiber.Map{"error": "Failed to create JWT token"})
 
 // 	}
 
-// 	db.Create(user)
+// 	handlers.GetDB().Create(user)
 // 	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
 // }
 
@@ -42,18 +39,13 @@ func Login_func(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
-	db, err := DB.Connect()
-	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to connect to database"})
-	}
-
 	var foundUser models.User
-	db.Where("username =?", user.Username).First(&foundUser)
+	handlers.GetDB().Where("username =?", user.Username).First(&foundUser)
 	if foundUser.ID == 0 {
 		return c.Status(401).JSON(fiber.Map{"error": "Invalid username or password"})
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(user.Password))
+	err := bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(user.Password))
 	if err != nil {
 		return c.Status(401).JSON(fiber.Map{"error": "Invalid username or password"})
 	}

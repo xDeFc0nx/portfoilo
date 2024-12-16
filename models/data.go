@@ -1,17 +1,18 @@
 package models
 
 import (
+	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
 type Projects struct {
 	gorm.Model
-	Image        string `json:"image"`
-	Title        string `json:"Title"`
-	Description  string `json:"description"`
-	Libraries    string `json:"libraries"`
-	Technologies string `json:"technologies"`
-	Details      string `json:"details"`
+	Logo         string         `json:"Logo"`
+	Title        string         `json:"Title"`
+	Technologies pq.StringArray `json:"Technologies" gorm:"type:text[]"`
+	Description  string         `json:"description"`
+	Libraries    pq.StringArray `json:"libraries" gorm:"type:text[]"`
+	Images       pq.StringArray `json:"images" gorm:"type:text[]"`
 }
 
 type User struct {
