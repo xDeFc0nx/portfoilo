@@ -28,7 +28,7 @@ func Create_Project(c *fiber.Ctx) error {
 	}
 	claims := token.Claims
 
-	file, err := c.FormFile("logo")
+	file, err := c.FormFile("Logo")
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid file logo", "details": err.Error()})
 	}

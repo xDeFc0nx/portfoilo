@@ -1,24 +1,32 @@
 export default function card({
-  ID,
-  Img,
+  Logo,
   Title,
-  Technologis,
+  Technologies,
 }: {
-  ID: number;
-  Img: string;
+  Logo: string;
   Title: string;
-  Technologis: string;
+  Technologies: string[];
 }) {
   return (
     <>
-      <div className="w-[20rem] h-[13rem]  text-white px-4 py-4 rounded-md bg-white/10  backdrop-filter backdrop-blur-lg	 shadow-lg">
+      <div className="w-full h-full  hover:border-teal-300 hover:scale-105 duration-400 transform transition rounded-sm shadow-inner  px-2 py-4  border-[2px] border-transparent bg-white/10  ">
         <div className="w-full flex justify-start">
-          <img src={Img} />
+          <img src={`/assets/${Logo}`} className=" h-2/4 w-full " />
         </div>
-        <p className="text-lg  text-white pl-1">{Title}</p>
+        <p className="inline-flex pt-2 pb-2 items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300  group/link text-base">
+          {Title}
+        </p>
 
-        <p className="text-sm text-[#92929B]">{Technologis}</p>
-        {ID}
+        <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+          {Technologies.map((tech, index) => (
+            <span
+              className="flex items-center rounded-full bg-teal-400/20 px-3 py-1 text-xs font-medium leading-5 text-teal-400"
+              key={index}
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
       </div>
     </>
   );

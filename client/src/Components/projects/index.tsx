@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../projects/card";
+import { Link } from "react-router-dom";
 
 interface Project {
   ID: number;
   Title: string;
-  Img: string;
-  Technologies: string;
+  Logo: string;
+  Technologies: string[];
 }
 
 function Index() {
   const [projects, setProjects] = useState<Project[]>([]);
-
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -31,7 +31,7 @@ function Index() {
 
   return (
     <>
-      <div className=" max-w-2xl m-auto md:max-w-4xl xl:max-w-[1280px] gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px  ">
+      <div className=" max-w-2xl m-auto md:max-w-4xl snap-start scroll-smooth xl:max-w-[1280px] gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px  ">
         <div className="flex flex-col xl:col-span-1 items-center pt-24 lx:pt-0   ">
           <span className="text-[30px] leading-[30px] xl:text-[40px] xl:leading-[60px] pb-5  text-center xl:text-left  text-white">
             Projects
@@ -39,17 +39,20 @@ function Index() {
           <div className="grid md:grid-cols-3 gap-16 ">
             <div className="contents xl:col-span-3 items-center  xl:pt-0">
               {projects.map((project) => (
-                <Card
-                  ID={project.ID}
-                  Img={project.Img}
-                  Title={project.Title}
-                  Technologis={project.Technologies}
-                />
+                <Link to={`/Project/${project.ID}`}>
+                  <Card
+                    Logo={project.Logo}
+                    Title={project.Title}
+                    Technologies={project.Technologies}
+                  />
+                </Link>
               ))}
             </div>
           </div>
         </div>
       </div>
+      <div className="bg-[#2565E1] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[4rem] xl:blur-[12rem] absolute  translate-x-[40rem]" />
+      <div className="bg-[#D225E1] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[4rem] xl:blur-[12rem] absolute  -translate-x-64" />
     </>
   );
 }
