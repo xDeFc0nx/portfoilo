@@ -1,15 +1,22 @@
+import { Link } from "react-router-dom";
+
 export default function card({
+  ID,
   Logo,
   Title,
   Technologies,
 }: {
+  ID: number;
   Logo: string;
   Title: string;
   Technologies: string[];
 }) {
   return (
     <>
-      <div className="w-full h-full  hover:border-teal-300 hover:scale-105 duration-400 transform transition rounded-sm shadow-inner  px-2 py-4  border-[2px] border-transparent bg-white/10  ">
+      <Link
+        to={`/Project/${ID}`}
+        className="w-full h-full  hover:border-teal-300  duration-400 transform transition rounded-sm shadow-inner  px-2 py-4  border-[2px] border-transparent bg-white/10"
+      >
         <div className="w-full flex justify-start">
           <img src={`/assets/${Logo}`} className=" h-2/4 w-full " />
         </div>
@@ -27,7 +34,7 @@ export default function card({
             </span>
           ))}
         </div>
-      </div>
+      </Link>
     </>
   );
 }
