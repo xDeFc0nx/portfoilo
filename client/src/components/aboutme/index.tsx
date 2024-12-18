@@ -24,8 +24,6 @@ function index() {
             </span>
           </span>
         </div>
-        <div className="bg-[#5B5CB4] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[8rem] xl:blur-[12rem] absolute -right-0.5 -translate-y-1/2" />
-        <div className="bg-[#5B5CB4] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[4rem] xl:blur-[12rem] absolute  -translate-x-3/4" />
       </div>
     </>
   );
