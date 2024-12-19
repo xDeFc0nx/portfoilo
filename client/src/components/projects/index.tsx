@@ -12,14 +12,9 @@ function Index() {
   const [projects, setProjects] = useState<Project[]>([]);
   useEffect(() => {
     const fetchProjects = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:3000/api/getprojects");
-        const data = await response.json();
-        setProjects(data.Projects);
-        console.log("Projects fetched:", data.Projects);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
+      const response = await fetch("http://127.0.0.1:3000/api/getprojects");
+      const data = await response.json();
+      setProjects(data.Projects);
     };
     fetchProjects();
   }, []);
