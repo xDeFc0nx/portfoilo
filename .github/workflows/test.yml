@@ -1,0 +1,54 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main # Run tests on every push to the main branch
+  pull_request:
+    branches:
+      - main # Run tests on pull requests targeting main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js for the client tests
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16" # Use the appropriate Node.js version for your project
+
+      # Install Node.js dependencies
+      - name: Install client dependencies
+        run: |
+          cd client
+          npm install
+
+      # Run client tests
+      - name: Run client tests
+        run: |
+          cd client
+          npm run test-all
+
+      # Set up Go for server tests
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20" # Use the appropriate Go version for your project
+
+      # Install Go dependencies
+      - name: Install Go dependencies
+        run: go mod tidy
+
+      # Run golangci-lint for server checks
+      - name: Run golangci-lint
+        run: golangci-lint run
+
+      # Notify success or failure
+      - name: Test Completed
+        run: echo "All tests completed!"
