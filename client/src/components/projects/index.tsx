@@ -15,8 +15,8 @@ function Index() {
       try {
         const response = await fetch("http://127.0.0.1:3000/api/getprojects");
         const data = await response.json();
-        setProjects(data.projects);
-        console.log("Projects fetched:", data.projects);
+        setProjects(data.Projects);
+        console.log("Projects fetched:", data.Projects);
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
@@ -29,10 +29,7 @@ function Index() {
 
   return (
     <>
-      <div
-        id="projects"
-        className=" max-w-2xl m-auto md:max-w-4xl snap-start scroll-smooth xl:max-w-[1280px] gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px  "
-      >
+      <div className=" max-w-2xl m-auto md:max-w-4xl snap-start scroll-smooth xl:max-w-[1280px] gap-16 xl:gap-1 min-h-screen xl:h-screen items-center px  ">
         <div className="flex flex-col xl:col-span-1 items-center pt-24 lx:pt-0   ">
           <span className="text-[30px] leading-[30px] xl:text-[40px] xl:leading-[60px] pb-5  text-center xl:text-left  text-white">
             Projects
