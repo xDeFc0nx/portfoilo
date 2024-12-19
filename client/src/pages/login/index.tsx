@@ -1,6 +1,5 @@
 import { useState } from "react";
-import "../../global.css";
-
+import "@/App.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
