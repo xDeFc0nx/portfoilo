@@ -43,7 +43,10 @@ jobs:
 
       # Install Go dependencies
       - name: Install Go dependencies
-        run: go mod tidy
+        run: |
+          go clean -modcache
+          go mod tidy
+          go mod download
 
       - name: Install golangci-lint
         run: |
