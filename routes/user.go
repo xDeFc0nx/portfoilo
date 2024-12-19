@@ -1,9 +1,12 @@
 package routes
 
 import (
+	"fmt"
+	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
@@ -63,6 +66,36 @@ func Login_func(c *fiber.Ctx) error {
 	c.Cookie(&cookie)
 	return c.JSON(fiber.Map{"message": "Success"})
 
+}
+func Auth_func(c *fiber.Ctx) error {
+	// Retrieve the token from the cookie
+	tokenString := c.Cookies("jwt-token")
+	if tokenString == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Missing jwt-token cookie"})
+	}
+
+	// Parse and validate the JWT
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Validate the signing method
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		// Return the secret key for validation
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	})
+
+	if err != nil || !token.Valid {
+		return c.Status(403).JSON(fiber.Map{"error": "Invalid or expired JWT token"})
+	}
+
+	// Token is valid, you can extract claims if needed
+	if claims, ok := token.Claims.(jwt.MapClaims); ok {
+		fmt.Printf("User claims: %v\n", claims)
+		// Optionally include claims in the response
+		return c.JSON(fiber.Map{"message": "Success", "claims": claims})
+	}
+
+	return c.JSON(fiber.Map{"message": "Success"})
 }
 
 func Logout_func(c *fiber.Ctx) error {

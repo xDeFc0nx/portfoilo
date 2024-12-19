@@ -16,6 +16,7 @@ function Login() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({ username, password }),
     }).then((response) => {
       if (!response.ok) {
@@ -25,7 +26,7 @@ function Login() {
           autoClose: 1000,
         });
 
-        navigate("/admin");
+        navigate("/admin/dashboard");
       }
     });
   };
