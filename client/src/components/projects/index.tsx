@@ -48,8 +48,6 @@ function Index() {
           </div>
         </div>
       </div>
-      <div className="bg-[#2565E1] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[4rem] xl:blur-[12rem] absolute  translate-x-[40rem]" />
-      <div className="bg-[#D225E1] -z-1 xl:w-96  xl:h-96 md:w-52 md:h-52 w-32 h-32 rounded-full blur-[4rem] xl:blur-[12rem] absolute  -translate-x-64" />
     </>
   );
 }
