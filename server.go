@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -43,6 +44,12 @@ func main() {
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 	}))
 	Setup_Routes(app)
+	app.Static("/assets", "./client/dist/assets", fiber.Static{
+		Compress: true, // optional: for gzip compression
+	})
+	app.Get("*", func(c *fiber.Ctx) error {
+		return c.SendFile(filepath.Join("./client/dist", "index.html"))
+	})
 
 	err2 := app.Listen(PORT)
 	if err2 != nil {
