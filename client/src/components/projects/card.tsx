@@ -15,7 +15,7 @@ export default function card({
     <>
       <Link
         to={`/Project/${ID}`}
-        className="w-full h-full  hover:border-teal-300  duration-400 transform transition rounded-sm shadow-inner  px-2 py-4  border-[2px] border-transparent bg-white/10"
+        className="w-full h-full  hover:border-teal-300  duration-400 transform transition  shadow-inner  px-2 py-4  bg-white/10 border border-white/10 rounded-2xl p-8"
       >
         <div className="w-full flex justify-start">
           <img src={`/assets/${Logo}`} className=" h-2/4 w-full " />
