@@ -35,28 +35,23 @@ export default function Contact() {
     formData.append("Email", values.Email);
     formData.append("Message", values.Message);
 
-    try {
-      const response = await fetch("http://127.0.0.1:3000/api/sendemail", {
-        method: "POST",
-        body: formData,
-      });
+    const response = await fetch("http://127.0.0.1:3000/api/sendemail", {
+      method: "POST",
+      body: formData,
+    });
 
-      if (response.ok) {
-        // Show success toast
-        toast.success("Email Sent!");
+    if (response.ok) {
+      // Show success toast
+      toast.success("Email Sent!");
 
-        // Reset the form after success
-        form.reset();
-      } else {
-        // Handle error when response is not OK
-        const errorData = await response.json();
-        toast.error(
-          `Failed to Send Email: ${errorData.message || response.statusText}`
-        );
-      }
-    } catch (error) {
-      // Handle network or other errors
-      toast.error(`Error: ${error.message}`);
+      // Reset the form after success
+      form.reset();
+    } else {
+      // Handle error when response is not OK
+      const errorData = await response.json();
+      toast.error(
+        `Failed to Send Email: ${errorData.message || response.statusText}`
+      );
     }
   }
   return (
