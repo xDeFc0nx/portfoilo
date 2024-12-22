@@ -60,7 +60,7 @@ function Index() {
       .array(
         z
           .instanceof(File)
-          .refine((file) => file.size > 0, "Please provide at least one image"),
+          .refine((file) => file.size > 0, "Please provide at least one image")
       )
       .nonempty("Please provide at least one image")
       .optional(), // Make images optional if uploaded
@@ -86,8 +86,6 @@ function Index() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log("Logo before append:", logo);
-      console.log("Images before append:", images);
       const formData = new FormData();
       if (logo && logo.length > 0) {
         formData.append("Logo", logo[0]);
@@ -101,7 +99,7 @@ function Index() {
       formData.append("Title", values.Title);
       formData.append("description", values.description);
       values.Technologies.forEach((tech) =>
-        formData.append("Technologies[]", tech),
+        formData.append("Technologies[]", tech)
       );
       values.libraries.forEach((lib) => formData.append("Libraries[]", lib));
 
@@ -113,7 +111,6 @@ function Index() {
 
         credentials: "include",
       }).then(async (response) => {
-        console.log(formData);
         if (response.ok) {
           toast.success("Project created successfully.");
           // window.location.href = `/admin/projects/`;
