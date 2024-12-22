@@ -10,7 +10,7 @@ import Project from "@/pages/Project";
 import ProjectsPage from "@/pages/admin/projects";
 import AddProject from "@/pages/admin/projects/addProject";
 import Dashboard from "@/pages/admin/dashboard.tsx";
-import EmailPage from "./pages/admin/projects copy/colums";
+import EmailPage from "@/pages/admin/emails";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -28,5 +28,5 @@ createRoot(document.getElementById("root")!).render(
       </Routes>
     </BrowserRouter>
     <ToastContainer />
-  </StrictMode>,
+  </StrictMode>
 );

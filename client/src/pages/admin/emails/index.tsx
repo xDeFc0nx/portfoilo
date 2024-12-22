@@ -53,7 +53,7 @@ export default function Index() {
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
-                  <BreadcrumbItem>Projects</BreadcrumbItem>
+                  <BreadcrumbItem>Emails</BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
