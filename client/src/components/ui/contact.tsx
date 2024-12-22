@@ -1,6 +1,5 @@
 "use client";
 
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "react-toastify";
 
 const formSchema = z.object({
   FullName: z.string().nonempty("Please provide Fullname"),
@@ -35,22 +35,30 @@ export default function Contact() {
     formData.append("Email", values.Email);
     formData.append("Message", values.Message);
 
-    const response = await fetch("http://127.0.0.1:3000/api/sendemail", {
-      method: "POST",
-      body: formData,
-    });
+    try {
+      const response = await fetch("http://127.0.0.1:3000/api/sendemail", {
+        method: "POST",
+        body: formData,
+      });
 
-    if (response.ok) {
-      toast.success("Email Sent!");
-    } else {
-      const errorData = await response.json();
+      if (response.ok) {
+        // Show success toast
+        toast.success("Email Sent!");
 
-      toast.error(
-        `Failed to Send Email: ${errorData.message || response.statusText}`
-      );
+        // Reset the form after success
+        form.reset();
+      } else {
+        // Handle error when response is not OK
+        const errorData = await response.json();
+        toast.error(
+          `Failed to Send Email: ${errorData.message || response.statusText}`
+        );
+      }
+    } catch (error) {
+      // Handle network or other errors
+      toast.error(`Error: ${error.message}`);
     }
   }
-
   return (
     <Form {...form}>
       <form
