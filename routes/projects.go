@@ -10,7 +10,7 @@ import (
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
-func Get_Projects(c *fiber.Ctx) error {
+func Get_Projects_func(c *fiber.Ctx) error {
 	var projects []models.Projects
 
 	handlers.GetDB().Find(&projects)
@@ -101,16 +101,7 @@ func Create_Project(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"message": "Project created successfully!", "claims": claims})
 }
 
-func Delete_Project(c *fiber.Ctx) error {
-
-	cookie := c.Cookies("jwt-token")
-
-	token, err := jwt.ParseWithClaims(cookie, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("SECRET_KEY")), nil
-	})
-	if err != nil || !token.Valid {
-		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
-	}
+func Delete_Project_func(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 	if id == "" {
