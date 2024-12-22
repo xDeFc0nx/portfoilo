@@ -33,15 +33,13 @@ func Create_JWT_Token(user models.User) (string, int64, error) {
 }
 
 func Check_Auth_func(c *fiber.Ctx) error {
-
 	cookie := c.Cookies("jwt-token")
 
 	token, err := jwt.ParseWithClaims(cookie, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 	if err != nil || !token.Valid {
-		return c.Redirect("/login", fiber.StatusFound)
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
 	}
-	return c.Next()
-
+	return c.Status(200).JSON("Authorized")
 }

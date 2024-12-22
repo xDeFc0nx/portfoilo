@@ -1,10 +1,7 @@
 package routes
 
 import (
-	"os"
-
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
 	"github.com/xDeFc0nx/portofoilo/models"
@@ -29,15 +26,9 @@ func Get_Project_by_Id(c *fiber.Ctx) error {
 	return c.JSON(project)
 }
 func Create_Project(c *fiber.Ctx) error {
-	cookie := c.Cookies("jwt-token")
-
-	token, err := jwt.ParseWithClaims(cookie, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("SECRET_KEY")), nil
-	})
-	if err != nil || !token.Valid {
-		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	if err := handlers.Check_Auth_func(c); err != nil {
+		return err
 	}
-	claims := token.Claims
 
 	file, err := c.FormFile("Logo")
 	if err != nil {
@@ -98,11 +89,13 @@ func Create_Project(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{"error": "Failed to create project", "details": err.Error()})
 	}
 
-	return c.JSON(fiber.Map{"message": "Project created successfully!", "claims": claims})
+	return c.JSON(fiber.Map{"message": "Project created successfully!"})
 }
 
 func Delete_Project_func(c *fiber.Ctx) error {
-
+	if err := handlers.Check_Auth_func(c); err != nil {
+		return err
+	}
 	id := c.Params("id")
 	if id == "" {
 		return c.Status(400).JSON(fiber.Map{"error": "Project ID is required"})

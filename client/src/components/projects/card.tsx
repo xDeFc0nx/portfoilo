@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
 export default function card({
   ID,
   Logo,
@@ -13,28 +13,47 @@ export default function card({
 }) {
   return (
     <>
-      <Link
-        to={`/Project/${ID}`}
-        className="w-full h-full  hover:border-teal-300  duration-400 transform transition  shadow-inner  px-2 py-4  bg-white/10 border border-white/10 rounded-2xl p-8"
-      >
-        <div className="w-full flex justify-start">
-          <img src={`/assets/${Logo}`} className=" h-2/4 w-full " />
-        </div>
-        <p className="inline-flex pt-2 pb-2 items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300  group/link text-base">
-          {Title}
-        </p>
-
-        <div className="flex flex-wrap gap-2 text-sm text-gray-600">
-          {Technologies.map((tech, index) => (
-            <span
-              className="flex items-center rounded-full bg-teal-400/20 px-3 py-1 text-xs font-medium leading-5 text-teal-400"
-              key={index}
+      <CardContainer className=" ">
+        <Link to={`/Project/${ID}`}>
+          <CardBody className="bg-white/10 relative group/card w-full h-full  hover:border-teal-300  duration-400 transform transition  shadow-inner   rounded-xl p-6 border  ">
+            <CardItem
+              translateZ="100"
+              rotateX={20}
+              rotateZ={-10}
+              className="w-full mt-4"
             >
-              {tech}
-            </span>
-          ))}
-        </div>
-      </Link>
+              <img src={`/assets/${Logo}`} className=" h-2/4 w-full " />
+            </CardItem>
+            <div className="flex justify-between items-center mt-10">
+              <CardItem
+                translateZ={20}
+                translateX={-40}
+                as="button"
+                className="px-4 py-2 rounded-xl text-xl font-normal dark:text-white"
+              >
+                {Title}
+              </CardItem>
+              <CardItem
+                translateZ={20}
+                translateX={40}
+                as="button"
+                className="px-4 py-2 rounded-xl  dark:bg-white dark:text-black text-white text-xs font-bold"
+              >
+                <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+                  {Technologies.map((tech, index) => (
+                    <span
+                      className="flex items-center rounded-full bg-teal-400/20 px-3 py-1 text-xs font-medium leading-5 text-teal-400"
+                      key={index}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </CardItem>
+            </div>
+          </CardBody>
+        </Link>
+      </CardContainer>
     </>
   );
 }

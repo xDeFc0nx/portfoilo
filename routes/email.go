@@ -1,10 +1,7 @@
 package routes
 
 import (
-	"os"
-
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
 	"github.com/xDeFc0nx/portofoilo/models"
@@ -27,18 +24,11 @@ func Create_Email_func(c *fiber.Ctx) error {
 }
 
 func Get_Emails_func(c *fiber.Ctx) error {
-	email := new(models.Email)
-
-	cookie := c.Cookies("jwt-token")
-
-	token, err := jwt.ParseWithClaims(cookie, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(os.Getenv("SECRET_KEY")), nil
-	})
-	if err != nil || !token.Valid {
-		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	if err := handlers.Check_Auth_func(c); err != nil {
+		return err // If not authenticated, return error (response already handled by Check_Auth_func)
 	}
-	if err := handlers.GetDB().Find(email).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to get emails", "details": err.Error()})
-	}
-	return c.JSON(email)
+	var emails [](models.Email)
+
+	handlers.GetDB().Find(&emails)
+	return c.JSON(fiber.Map{"emails": emails})
 }

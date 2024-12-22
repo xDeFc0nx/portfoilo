@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Projects, columns } from "./colums";
+import { Emails, columns } from "./colums"; // Adjust the import as needed
 import { DataTable } from "./dataTable";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import {
@@ -16,26 +16,44 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import "@/App.css";
+
 async function getData() {
-  const response = await fetch("http://127.0.0.1:3000/api/getemails");
-  if (!response.ok) {
-    throw new Error("Failed to fetch data");
+  try {
+    const response = await fetch("http://127.0.0.1:3000/api/getemails", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    // Log the response status and body for debugging
+    console.log("Response status:", response.status);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data: ${response.statusText}`);
+    }
+
+    // Parse the JSON response directly
+    const data = await response.json();
+
+    // Assuming the emails are inside the 'emails' property
+    return data.emails || []; // Return the emails array, or an empty array if not found
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return []; // Return an empty array in case of an error
   }
-  return response.json();
 }
 
 export default function Index() {
-  const [data, setData] = useState<Projects[]>([]);
+  const [emails, setEmails] = useState<Emails[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getData();
-      setData(result.Projects);
-    };
+    async function fetchEmails() {
+      const data = await getData();
+      console.log("Fetched emails:", data); // Log the fetched data before setting it
+      setEmails(data);
+    }
 
-    fetchData();
+    fetchEmails();
   }, []);
-
   return (
     <>
       <SidebarProvider>
@@ -59,7 +77,7 @@ export default function Index() {
             </div>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={emails} />
           </div>
         </SidebarInset>
       </SidebarProvider>

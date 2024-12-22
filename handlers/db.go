@@ -34,6 +34,7 @@ func Connect() (*gorm.DB, error) {
 
 		&models.Projects{},
 		&models.User{},
+		&models.Email{},
 	); err != nil {
 		return nil, err
 	}

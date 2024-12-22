@@ -9,9 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { DataTable } from "./dataTable";
 import { toast } from "react-toastify";
 
 export interface Projects {
@@ -66,7 +63,7 @@ export const columns: ColumnDef<Projects>[] = [
                         "Content-Type": "application/json",
                       },
                       credentials: "include",
-                    },
+                    }
                   );
                   if (response.ok) {
                     toast.success("Project deleted");
@@ -84,31 +81,3 @@ export const columns: ColumnDef<Projects>[] = [
     },
   },
 ];
-
-export default function ProjectsPage() {
-  const { id } = useParams();
-  const [project, setProject] = useState<Projects | null>(null);
-
-  useEffect(() => {
-    const fetchProject = async () => {
-      const response = await fetch(
-        `http://127.0.0.1:3000/api/getproject/${id}`,
-      );
-      const data = await response.json();
-      setProject(data);
-    };
-
-    fetchProject();
-  }, [id]);
-
-  if (!project) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div className="container mx-auto py-10">
-      {/* Pass `columns` and `project` data into your DataTable */}
-      <DataTable columns={columns} data={[project]} />
-    </div>
-  );
-}

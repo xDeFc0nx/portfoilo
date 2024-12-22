@@ -23,7 +23,8 @@ func Setup_Routes(app *fiber.App) {
 	app.Post("api/createproject", routes.Create_Project)
 	app.Post("api/deleteproject/:id", routes.Delete_Project_func)
 	app.Post("api/sendemail", routes.Create_Email_func)
-	app.Post("api/getemails", routes.Get_Emails_func)
+	app.Get("api/getemails", routes.Get_Emails_func)
+	app.Get("/api/check-auth", handlers.Check_Auth_func)
 
 }
 func main() {
@@ -44,8 +45,9 @@ func main() {
 		AllowOrigins:     "http://127.0.0.1:5173",
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 	}))
+
 	Setup_Routes(app)
-	app.Use("/admin", handlers.Check_Auth_func)
+
 	app.Static("/assets", "./client/dist/assets", fiber.Static{
 		Compress: true, // optional: for gzip compression
 	})

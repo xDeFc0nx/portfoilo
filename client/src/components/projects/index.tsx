@@ -66,7 +66,7 @@ function Index() {
               ))}
             </div>
           </div>
-          <Pagination className="pt-10">
+          <Pagination className="pt-5">
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious

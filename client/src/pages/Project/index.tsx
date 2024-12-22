@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import "@/App.css";
+import Contact from "@/components/ui/contact";
 interface Project {
   Title: string;
   images: string[];
@@ -32,7 +33,7 @@ function Index() {
   useEffect(() => {
     const fetchProject = async () => {
       const response = await fetch(
-        `http://127.0.0.1:3000/api/getproject/${id}`,
+        `http://127.0.0.1:3000/api/getproject/${id}`
       );
       const data = await response.json();
 
@@ -108,6 +109,7 @@ function Index() {
           </CardFooter>
         </CardContent>
       </Card>
+      <Contact />
     </div>
   );
 }
