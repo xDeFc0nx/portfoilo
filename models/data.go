@@ -20,3 +20,10 @@ type User struct {
 	Username string `gorm:"type:varchar(50);unique" json:"username"`
 	Password string `json:"-"`
 }
+
+type Email struct {
+	gorm.Model
+	FullName string `json:"FullName"`
+	Email    string `json:"Email"`
+	Message  string `json:"Message"`
+}

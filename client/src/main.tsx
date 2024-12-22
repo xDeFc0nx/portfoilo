@@ -10,6 +10,7 @@ import Project from "@/pages/Project";
 import ProjectsPage from "@/pages/admin/projects";
 import AddProject from "@/pages/admin/projects/addProject";
 import Dashboard from "@/pages/admin/dashboard.tsx";
+import EmailPage from "./pages/admin/projects copy/colums";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/projects" element={<ProjectsPage />} />
         <Route path="/admin/projects/add" element={<AddProject />} />
+        <Route path="/admin/emails" element={<EmailPage />} />
       </Routes>
     </BrowserRouter>
     <ToastContainer />
