@@ -1,4 +1,11 @@
-import { Home, Folder, User2, ChevronUp, MoreHorizontal } from "lucide-react";
+import {
+  Home,
+  Folder,
+  User2,
+  ChevronUp,
+  MoreHorizontal,
+  Mail,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,7 +24,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const items = [
@@ -29,8 +35,6 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const navigate = useNavigate();
-
   const handleClick = async () => {
     const response = await fetch("http://127.0.0.1:3000/api/logout", {
       method: "POST",
@@ -42,8 +46,6 @@ export function AppSidebar() {
       toast.success("Loging Out", {
         autoClose: 1000,
       });
-
-      navigate("/login");
     }
   };
 
@@ -69,6 +71,12 @@ export function AppSidebar() {
                   <a href="/admin/projects">
                     <Folder />
                     <span>Projects</span>
+                  </a>
+                </SidebarMenuButton>
+                <SidebarMenuButton asChild>
+                  <a href="/admin/emails">
+                    <Mail />
+                    <span>Emails</span>
                   </a>
                 </SidebarMenuButton>
                 <DropdownMenu>

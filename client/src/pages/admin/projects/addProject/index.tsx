@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/sidebar";
 import "@/App.css";
 
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { useForm } from "react-hook-form";
@@ -40,7 +39,7 @@ import {
   FileUploaderItem,
 } from "@/components/ui/file-upload";
 import { TagsInput } from "@/components/ui/tags-input";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Index() {
   const formSchema = z.object({
@@ -60,7 +59,7 @@ function Index() {
       .array(
         z
           .instanceof(File)
-          .refine((file) => file.size > 0, "Please provide at least one image")
+          .refine((file) => file.size > 0, "Please provide at least one image"),
       )
       .nonempty("Please provide at least one image")
       .optional(), // Make images optional if uploaded
@@ -99,7 +98,7 @@ function Index() {
       formData.append("Title", values.Title);
       formData.append("description", values.description);
       values.Technologies.forEach((tech) =>
-        formData.append("Technologies[]", tech)
+        formData.append("Technologies[]", tech),
       );
       values.libraries.forEach((lib) => formData.append("Libraries[]", lib));
 
@@ -123,24 +122,7 @@ function Index() {
       toast.error("Failed to submit the form. Please try again.");
     }
   }
-  const navigate = useNavigate();
-  useEffect(() => {
-    const checkAuth = async () => {
-      const response = await fetch("http://127.0.0.1:3000/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
 
-      if (!response.ok) {
-        navigate("/login");
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
   return (
     <>
       <SidebarProvider>

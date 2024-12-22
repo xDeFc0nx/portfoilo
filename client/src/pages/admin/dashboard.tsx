@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { AppSidebar } from "../../components/ui/app-sidebar";
 import {
   Breadcrumb,
@@ -16,25 +14,6 @@ import {
 } from "@/components/ui/sidebar";
 import "@/App.css";
 function Dashboard() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const checkAuth = async () => {
-      const response = await fetch("http://127.0.0.1:3000/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        navigate("/login");
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
-
   return (
     <>
       <SidebarProvider>

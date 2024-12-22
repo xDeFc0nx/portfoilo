@@ -16,7 +16,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import "@/App.css";
-import { useNavigate } from "react-router-dom";
 async function getData() {
   const response = await fetch("http://127.0.0.1:3000/api/getprojects");
   if (!response.ok) {
@@ -26,24 +25,6 @@ async function getData() {
 }
 
 export default function Index() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const checkAuth = async () => {
-      const response = await fetch("http://127.0.0.1:3000/api/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        navigate("/login");
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
   const [data, setData] = useState<Projects[]>([]);
 
   useEffect(() => {
