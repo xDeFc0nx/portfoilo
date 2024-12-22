@@ -4,6 +4,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 	"github.com/xDeFc0nx/logger-go-pkg"
@@ -29,4 +30,18 @@ func Create_JWT_Token(user models.User) (string, int64, error) {
 		return "", 0, err
 	}
 	return t, exp, nil
+}
+
+func Check_Auth_func(c *fiber.Ctx) error {
+
+	cookie := c.Cookies("jwt-token")
+
+	token, err := jwt.ParseWithClaims(cookie, &jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("SECRET_KEY")), nil
+	})
+	if err != nil || !token.Valid {
+		return c.Redirect("/login", fiber.StatusFound)
+	}
+	return c.Next()
+
 }
