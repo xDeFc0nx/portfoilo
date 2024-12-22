@@ -13,75 +13,137 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import "@/App.css";
-// import { Input } from "@/components/ui/input";
-// import { useState } from "react";
-// import { toast } from "react-toastify";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
 
-// type FormData = {
-//   title: string;
-//   description: string;
-//   technologies: string[];
-//   libraries: string[];
-//   logo: string;
-//   images: FileList | null;
-// };
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { CloudUpload, Paperclip } from "lucide-react";
+import {
+  FileInput,
+  FileUploader,
+  FileUploaderContent,
+  FileUploaderItem,
+} from "@/components/ui/file-upload";
+import { TagsInput } from "@/components/ui/tags-input";
+import { useNavigate } from "react-router-dom";
 
 function Index() {
-  // const [title, setTitle] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [technologiesInput, setTechnologiesInput] = useState<string>(""); // New input state for technologies
-  // const [librariesInput, setLibrariesInput] = useState<string>(""); // New input state for libraries
-  // const [technologies, setTechnologies] = useState<string[]>([]);
-  // const [libraries, setLibraries] = useState<string[]>([]);
-  // const [logo, setLogo] = useState<string>("");
-  // const [images, setImages] = useState<FileList | null>(null);
+  const formSchema = z.object({
+    Logo: z
+      .instanceof(File)
+      .refine((file) => file.size > 0, "Logo is required")
+      .optional(), // Make Logo optional if a file is uploaded
+    Title: z.string().nonempty("Title is required"),
+    Technologies: z
+      .array(z.string())
+      .nonempty("Please specify at least one technology"),
+    description: z.string().nonempty("Description is required"),
+    libraries: z
+      .array(z.string())
+      .nonempty("Please specify at least one library"),
+    images: z
+      .array(
+        z
+          .instanceof(File)
+          .refine((file) => file.size > 0, "Please provide at least one image")
+      )
+      .nonempty("Please provide at least one image")
+      .optional(), // Make images optional if uploaded
+  });
 
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
+  // Separate state for Logo and Images
+  const [logo, setLogo] = useState<File[] | null>(null);
+  const [images, setImages] = useState<File[] | null>(null);
 
-  //   if (!images) {
-  //     toast.error("Please upload images.");
-  //     return;
-  //   }
+  const dropZoneConfig = {
+    maxFiles: 5,
+    maxSize: 1024 * 1024 * 4, // 4MB max file size
+    multiple: true,
+  };
 
-  //   const formData = new FormData();
-  //   formData.append("title", title);
-  //   formData.append("description", description);
-  //   formData.append("technologies", JSON.stringify(technologies));
-  //   formData.append("libraries", JSON.stringify(libraries));
-  //   formData.append("logo", logo);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      Technologies: ["test"],
+      libraries: ["test"],
+    },
+  });
 
-  //   Array.from(images).forEach((image) => {
-  //     formData.append("images", image);
-  //   });
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      console.log("Logo before append:", logo);
+      console.log("Images before append:", images);
+      const formData = new FormData();
+      if (logo && logo.length > 0) {
+        formData.append("Logo", logo[0]);
+      }
+      if (images && images.length > 0) {
+        images.forEach((image) => {
+          formData.append("Images[]", image); // Appending each image file
+        });
+      }
+      // Append the values to FormData
+      formData.append("Title", values.Title);
+      formData.append("description", values.description);
+      values.Technologies.forEach((tech) =>
+        formData.append("Technologies[]", tech)
+      );
+      values.libraries.forEach((lib) => formData.append("Libraries[]", lib));
 
-  //   fetch("http://127.0.0.1:3000/api/createproject", {
-  //     method: "POST",
-  //     credentials: "include",
-  //     body: formData,
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         toast.error("Failed to create project.");
-  //       } else {
-  //         toast.success("Project created successfully!", { autoClose: 1000 });
-  //       }
-  //     })
-  //     .catch(() => {
-  //       toast.error("An error occurred while submitting.");
-  //     });
-  // };
+      // Append files (Logo and Images)
 
+      fetch("http://127.0.0.1:3000/api/createproject", {
+        method: "POST",
+        body: formData,
+
+        credentials: "include",
+      }).then(async (response) => {
+        console.log(formData);
+        if (response.ok) {
+          toast.success("Project created successfully.");
+          // window.location.href = `/admin/projects/`;
+        } else {
+          toast.error("Failed to create project. Please try again.");
+        }
+      });
+    } catch (error) {
+      console.error("Form submission error", error);
+      toast.error("Failed to submit the form. Please try again.");
+    }
+  }
+  const navigate = useNavigate();
+  useEffect(() => {
+    const checkAuth = async () => {
+      const response = await fetch("http://127.0.0.1:3000/api/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        navigate("/login");
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
   return (
     <>
       <SidebarProvider>
@@ -108,32 +170,182 @@ function Index() {
               </Breadcrumb>
             </div>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            {/* <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Username</FormLabel>
-                      <FormControl>
-                        <Input placeholder="shadcn" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        This is your public display name.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit">Submit</Button>
-              </form>
-            </Form> */}
-          </div>
+
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8 max-w-3xl mx-auto py-10"
+            >
+              {/* Title Field */}
+              <FormField
+                control={form.control}
+                name="Title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Project Title" type="" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Description Field */}
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter project description in Markdown"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Technologies Field */}
+              <FormField
+                control={form.control}
+                name="Technologies"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enter your technologies.</FormLabel>
+                    <FormControl>
+                      <TagsInput
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        placeholder="Enter your tags"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Libraries Field */}
+              <FormField
+                control={form.control}
+                name="libraries"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enter your Libraries</FormLabel>
+                    <FormControl>
+                      <TagsInput
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        placeholder="Enter your tags"
+                      />
+                    </FormControl>
+                    <FormDescription>Add tags.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="Logo"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Select Logo</FormLabel>
+                    <FormControl>
+                      <FileUploader
+                        value={logo}
+                        onValueChange={setLogo}
+                        dropzoneOptions={dropZoneConfig}
+                        className="relative bg-background rounded-lg p-2"
+                      >
+                        <FileInput
+                          id="fileInput"
+                          className="outline-dashed outline-1 outline-slate-500"
+                        >
+                          <div className="flex items-center justify-center flex-col p-8 w-full ">
+                            <CloudUpload className="text-gray-500 w-10 h-10" />
+                            <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                              <span className="font-semibold">
+                                Click to upload
+                              </span>
+                              &nbsp; or drag and drop
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              SVG, PNG, JPG or GIF
+                            </p>
+                          </div>
+                        </FileInput>
+                        <FileUploaderContent>
+                          {logo &&
+                            logo.length > 0 &&
+                            logo.map((file, i) => (
+                              <FileUploaderItem key={i} index={i}>
+                                <Paperclip className="h-4 w-4 stroke-current" />
+                                <span>{file.name}</span>
+                              </FileUploaderItem>
+                            ))}
+                        </FileUploaderContent>
+                      </FileUploader>
+                    </FormControl>
+                    <FormDescription>Select a file to upload.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="images"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Select Images</FormLabel>
+                    <FormControl>
+                      <FileUploader
+                        value={images}
+                        onValueChange={setImages}
+                        dropzoneOptions={dropZoneConfig}
+                        className="relative bg-background rounded-lg p-2"
+                      >
+                        <FileInput
+                          id="fileInput"
+                          className="outline-dashed outline-1 outline-slate-500"
+                        >
+                          <div className="flex items-center justify-center flex-col p-8 w-full ">
+                            <CloudUpload className="text-gray-500 w-10 h-10" />
+                            <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
+                              <span className="font-semibold">
+                                Click to upload
+                              </span>
+                              &nbsp; or drag and drop
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              SVG, PNG, JPG or GIF
+                            </p>
+                          </div>
+                        </FileInput>
+                        <FileUploaderContent>
+                          {images &&
+                            images.length > 0 &&
+                            images.map((file, i) => (
+                              <FileUploaderItem key={i} index={i}>
+                                <Paperclip className="h-4 w-4 stroke-current" />
+                                <span>{file.name}</span>
+                              </FileUploaderItem>
+                            ))}
+                        </FileUploaderContent>
+                      </FileUploader>
+                    </FormControl>
+                    <FormDescription>Select a file to upload.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Submit</Button>
+            </form>
+          </Form>
         </SidebarInset>
       </SidebarProvider>
     </>
