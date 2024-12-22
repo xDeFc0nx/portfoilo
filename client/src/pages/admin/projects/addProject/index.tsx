@@ -60,7 +60,7 @@ function Index() {
       .array(
         z
           .instanceof(File)
-          .refine((file) => file.size > 0, "Please provide at least one image")
+          .refine((file) => file.size > 0, "Please provide at least one image"),
       )
       .nonempty("Please provide at least one image")
       .optional(), // Make images optional if uploaded
@@ -101,7 +101,7 @@ function Index() {
       formData.append("Title", values.Title);
       formData.append("description", values.description);
       values.Technologies.forEach((tech) =>
-        formData.append("Technologies[]", tech)
+        formData.append("Technologies[]", tech),
       );
       values.libraries.forEach((lib) => formData.append("Libraries[]", lib));
 
