@@ -14,7 +14,7 @@ import (
 )
 
 func Setup_Routes(app *fiber.App) {
-	// app.Post("api/createuser", routes.CreateUser)
+	app.Post("api/createuser", routes.CreateUser)
 	app.Post("api/login", routes.Login_func)
 	app.Post("api/logout", routes.Logout_func)
 	app.Get("api/getprojects", routes.Get_Projects_func)
