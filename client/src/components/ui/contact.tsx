@@ -50,7 +50,7 @@ export default function Contact() {
       // Handle error when response is not OK
       const errorData = await response.json();
       toast.error(
-        `Failed to Send Email: ${errorData.message || response.statusText}`
+        `Failed to Send Email: ${errorData.message || response.statusText}`,
       );
     }
   }

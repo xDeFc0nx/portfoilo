@@ -63,7 +63,7 @@ export const columns: ColumnDef<Projects>[] = [
                         "Content-Type": "application/json",
                       },
                       credentials: "include",
-                    }
+                    },
                   );
                   if (response.ok) {
                     toast.success("Project deleted");
