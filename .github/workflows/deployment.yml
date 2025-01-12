@@ -1,0 +1,33 @@
+
+name: Deploy to Azure VM
+
+on:
+  push:
+    branches: [ "main" ]  # Change this to your default branch if necessary
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.AZURE_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.AZURE_VM_IP }} >> ~/.ssh/known_hosts
+
+    - name: Run Docker Compose on Azure VM
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+          # Clone the repository if it doesn't exist
+          if [ ! -d "/project/portfoilo" ]; then
+            git clone https://github.com/yourusername/your-repo.git /project/portfoilo  # Change this to your repo URL
+          fi
+          cd /project/portfoilo  # Change this to your project directory
+          docker-compose pull  # Pull the latest images
+          docker-compose up --build -d  # Build and start the containers
+        EOF
