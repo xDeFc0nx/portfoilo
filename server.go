@@ -6,7 +6,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
 	"github.com/xDeFc0nx/logger-go-pkg"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
@@ -25,18 +24,12 @@ func Setup_Routes(app *fiber.App) {
 	app.Post("api/sendemail", routes.Create_Email_func)
 	app.Get("api/getemails", routes.Get_Emails_func)
 	app.Get("/api/check-auth", handlers.Check_Auth_func)
-
 }
-func main() {
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		logger.Error("Error loading.env file")
-	}
+func main() {
 	_, err1 := DB.Connect()
 	if err1 != nil {
 		logger.Error("Failed to connect to database")
-
 	}
 
 	app := fiber.New()
@@ -59,5 +52,4 @@ func main() {
 	if err2 != nil {
 		logger.Error("Error listening")
 	}
-
 }

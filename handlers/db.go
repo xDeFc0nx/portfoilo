@@ -3,7 +3,6 @@ package handlers
 import (
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/xDeFc0nx/logger-go-pkg"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -14,17 +13,9 @@ import (
 var db *gorm.DB
 
 func Connect() (*gorm.DB, error) {
-
-	err := godotenv.Load(".env")
-	if err != nil {
-		logger.Error("Error loading.env file")
-		os.Exit(1)
-	}
-
 	dsn := os.Getenv("DB_CONFIG")
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-
 		return nil, err
 	}
 
@@ -42,6 +33,7 @@ func Connect() (*gorm.DB, error) {
 
 	return db, nil
 }
+
 func GetDB() *gorm.DB {
 	return db
 }
