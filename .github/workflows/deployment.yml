@@ -25,7 +25,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
           # Clone the repository if it doesn't exist
           if [ ! -d "~/project/portfoilo" ]; then
-            git clone https://github.com/yourusername/your-repo.git /project/portfoilo  # Change this to your repo URL
+          cd ~/projects/
+          git clone https://github.com/xDeFc0nx/portfoilo.git
           fi
           cd /project/portfoilo  # Change this to your project directory
           docker-compose pull  # Pull the latest images
