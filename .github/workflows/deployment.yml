@@ -24,7 +24,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
           # Clone the repository if it doesn't exist
-          if [ ! -d "/project/portfoilo" ]; then
+          if [ ! -d "~/project/portfoilo" ]; then
             git clone https://github.com/yourusername/your-repo.git /project/portfoilo  # Change this to your repo URL
           fi
           cd /project/portfoilo  # Change this to your project directory
