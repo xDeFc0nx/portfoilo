@@ -10,30 +10,31 @@ import (
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
-// func CreateUser(c *fiber.Ctx) error {
+func CreateUser(c *fiber.Ctx) error {
+	user := new(models.User)
+	if err := c.BodyParser(user); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+	hashedPassword, err := bcrypt.GenerateFromPassword(
+		[]byte(user.Password),
+		bcrypt.DefaultCost,
+	)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to hash password"})
+	}
+	user.Password = string(hashedPassword)
 
-// 	user := new(models.User)
-// 	if err := c.BodyParser(user); err != nil {
-// 		return c.Status(400).JSON(err.Error())
-// 	}
-// 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-// 	if err != nil {
-// 		return c.Status(500).JSON(fiber.Map{"error": "Failed to hash password"})
-// 	}
-// 	user.Password = string(hashedPassword)
+	token, exp, err := handlers.Create_JWT_Token(*user)
+	if err != nil {
+		return c.Status(500).
+			JSON(fiber.Map{"error": "Failed to create JWT token"})
+	}
 
-// 	token, exp, err := handlers.Create_JWT_Token(*user)
-// 	if err != nil {
-// 		return c.Status(500).JSON(fiber.Map{"error": "Failed to create JWT token"})
-
-// 	}
-
-// 	handlers.GetDB().Create(user)
-// 	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
-// }
+	handlers.GetDB().Create(user)
+	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
+}
 
 func Login_func(c *fiber.Ctx) error {
-
 	user := new(models.User)
 	if err := c.BodyParser(user); err != nil {
 		return c.Status(400).JSON(err.Error())
@@ -42,16 +43,22 @@ func Login_func(c *fiber.Ctx) error {
 	var foundUser models.User
 	handlers.GetDB().Where("username =?", user.Username).First(&foundUser)
 	if foundUser.ID == 0 {
-		return c.Status(401).JSON(fiber.Map{"error": "Invalid username or password"})
+		return c.Status(401).
+			JSON(fiber.Map{"error": "Invalid username or password"})
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(user.Password))
+	err := bcrypt.CompareHashAndPassword(
+		[]byte(foundUser.Password),
+		[]byte(user.Password),
+	)
 	if err != nil {
-		return c.Status(401).JSON(fiber.Map{"error": "Invalid username or password"})
+		return c.Status(401).
+			JSON(fiber.Map{"error": "Invalid username or password"})
 	}
 	token, exp, err := handlers.Create_JWT_Token(foundUser)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to create JWT token"})
+		return c.Status(500).
+			JSON(fiber.Map{"error": "Failed to create JWT token"})
 	}
 
 	cookie := fiber.Cookie{
@@ -62,7 +69,6 @@ func Login_func(c *fiber.Ctx) error {
 	}
 	c.Cookie(&cookie)
 	return c.JSON(fiber.Map{"message": "Success"})
-
 }
 
 func Logout_func(c *fiber.Ctx) error {
@@ -75,5 +81,4 @@ func Logout_func(c *fiber.Ctx) error {
 	c.Cookie(&cookie)
 
 	return c.JSON(fiber.Map{"message": "Success"})
-
 }
