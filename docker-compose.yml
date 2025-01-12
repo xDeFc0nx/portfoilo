@@ -1,7 +1,6 @@
-
 services:
   client:
-    image: node:16  # Use Node.js image for building the client
+    image: node:23  # Use Node.js image for building the client
     working_dir: /app
     volumes:
       - ./client:/app  # Mount the client directory
@@ -9,21 +8,22 @@ services:
       sh -c "npm install && npm run build"  # Install dependencies and build
 
   server:
-    build:
-      context: .
-      dockerfile: Dockerfile  # Ensure this points to the correct Dockerfile for the server
-    ports:
-      - '3001:3001'  # Expose server on port 3000
+    image: golang:1.23  # Use Go image for the server
+    working_dir: /app
+    volumes:
+      - .:/app  # Mount the entire project directory for development
+      - /app/tmp  # Optional: for air to use a tmp directory
     environment:
       - GO_ENV=development
       - DB_CONFIG=postgresql://user:password@db:5432/dbname  # Update with your DB credentials
-      - PORT=:3000
+      - PORT=:3001
       - SECRET=asdasdwqe123
+    command: >
+      sh -c "go mod tidy && go install github.com/cosmtrek/air@latest && air"  # Install dependencies and run air
+    ports:
+      - '3001:3001'  # Expose server on port 3000
     depends_on:
       - db  # Ensure the db service is started before the server
-    volumes:
-      - .:/app  # Mount the entire project directory for development
-
   db:
     image: postgres:latest
     restart: always
