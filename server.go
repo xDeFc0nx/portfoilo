@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/xDeFc0nx/logger-go-pkg"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
@@ -33,11 +32,6 @@ func main() {
 	}
 
 	app := fiber.New()
-	app.Use(cors.New(cors.Config{
-		AllowCredentials: true,
-		AllowOrigins:     "http://127.0.0.1:5173",
-		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
-	}))
 
 	Setup_Routes(app)
 
