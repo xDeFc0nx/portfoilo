@@ -28,7 +28,7 @@ jobs:
           cd ~/projects/
           git clone https://github.com/xDeFc0nx/portfoilo.git
           fi
-          cd /project/portfoilo  # Change this to your project directory
+          cd /projects/portfoilo  # Change this to your project directory
           docker-compose pull  # Pull the latest images
           docker-compose up --build -d  # Build and start the containers
         EOF
