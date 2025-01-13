@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import "@/App.css";
 async function getData() {
-  const response = await fetch("http://127.0.0.1:3001/api/getprojects");
+  const response = await fetch("https://nehar.online/api/getprojects");
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }

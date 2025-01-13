@@ -104,7 +104,7 @@ function Index() {
 
       // Append files (Logo and Images)
 
-      fetch("http://127.0.0.1:3000/api/createproject", {
+      fetch("https://nehar.online/api/createproject", {
         method: "POST",
         body: formData,
 
