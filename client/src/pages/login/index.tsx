@@ -10,7 +10,7 @@ function Login() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch("http://127.0.0.1:3000/api/login", {
+    fetch("http://127.0.0.1:3001/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

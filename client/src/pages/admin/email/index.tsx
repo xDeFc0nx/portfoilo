@@ -19,7 +19,7 @@ import "@/App.css";
 
 async function getData() {
   try {
-    const response = await fetch("http://127.0.0.1:3000/api/getemails", {
+    const response = await fetch("http://127.0.0.1:3001/api/getemails", {
       method: "GET",
       credentials: "include",
     });

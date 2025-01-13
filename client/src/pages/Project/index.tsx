@@ -33,7 +33,7 @@ function Index() {
   useEffect(() => {
     const fetchProject = async () => {
       const response = await fetch(
-        `http://127.0.0.1:3000/api/getproject/${id}`,
+        `http://127.0.0.1:3001/api/getproject/${id}`,
       );
       const data = await response.json();
 
