@@ -33,7 +33,7 @@ func main() {
 
 	Setup_Routes(app)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http:///127.0.0.1:3001",
+		AllowOrigins:     "http://127.0.0.1:3001",
 		AllowMethods:     "GET,POST,PUT,DELETE",
 		AllowHeaders:     "Origin, Content-Type, Accept",
 		AllowCredentials: true,
