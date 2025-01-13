@@ -22,7 +22,7 @@ function Index() {
   const [endIndex, setEndIndex] = useState(rowsPerPage);
 
   const fetchProjects = async () => {
-    const response = await fetch("http://127.0.0.1:3000/api/getprojects");
+    const response = await fetch("https://nehar.online/api/getprojects");
     const data = await response.json();
     setProjects(data.Projects);
   };
