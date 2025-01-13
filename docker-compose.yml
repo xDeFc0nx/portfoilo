@@ -1,9 +1,6 @@
 services:
   client:
     image: node:23  # Use Node.js image for building the client
-    working_dir: /app
-    volumes:
-      - ./client:/app  # Mount the client directory
     command: >
       sh -c "npm install && npm run build"  # Install dependencies and build
 
