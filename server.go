@@ -33,7 +33,7 @@ func main() {
 
 	Setup_Routes(app)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "https://nehar.online",
+		AllowOrigins:     "http://localhost:3001",
 		AllowMethods:     "GET,POST,PUT,DELETE",
 		AllowHeaders:     "Origin, Content-Type, Accept",
 		AllowCredentials: true,
