@@ -8,19 +8,19 @@ import (
 )
 
 func Create_Email_func(c *fiber.Ctx) error {
-
 	email := new(models.Email)
 
 	if err := c.BodyParser(email); err != nil {
-		return c.Status(400).JSON(fiber.Map{"error": "Invalid email data", "details": err.Error()})
+		return c.Status(400).
+			JSON(fiber.Map{"error": "Invalid email data", "details": err.Error()})
 	}
 
-	if err := handlers.GetDB().Create(email).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to send email", "details": err.Error()})
+	if err := handlers.DB.Create(email).Error; err != nil {
+		return c.Status(500).
+			JSON(fiber.Map{"error": "Failed to send email", "details": err.Error()})
 	}
 
 	return c.JSON(fiber.Map{"message": "Email Sent successfully!"})
-
 }
 
 func Get_Emails_func(c *fiber.Ctx) error {
@@ -29,6 +29,6 @@ func Get_Emails_func(c *fiber.Ctx) error {
 	}
 	var emails [](models.Email)
 
-	handlers.GetDB().Find(&emails)
+	handlers.DB.Find(&emails)
 	return c.JSON(fiber.Map{"emails": emails})
 }

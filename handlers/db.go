@@ -10,30 +10,26 @@ import (
 	"github.com/xDeFc0nx/portofoilo/models"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
 
-func Connect() (*gorm.DB, error) {
+func Conn() {
+	var err error
 	dsn := os.Getenv("DB_CONFIG")
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	logger.Debug(dsn)
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	logger.Success("Successfully connected to Database!")
 
-	if err := db.AutoMigrate(
+	if err := DB.AutoMigrate(
 
 		&models.Projects{},
 		&models.User{},
 		&models.Email{},
 	); err != nil {
-		return nil, err
+		return
 	}
 	logger.Success("Successfully Migrated!")
-
-	return db, nil
-}
-
-func GetDB() *gorm.DB {
-	return db
 }

@@ -26,10 +26,7 @@ func Setup_Routes(app *fiber.App) {
 }
 
 func main() {
-	_, err1 := DB.Connect()
-	if err1 != nil {
-		logger.Error("Failed to connect to database")
-	}
+	DB.Conn()
 
 	app := fiber.New()
 

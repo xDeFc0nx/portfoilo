@@ -30,7 +30,7 @@ func CreateUser(c *fiber.Ctx) error {
 			JSON(fiber.Map{"error": "Failed to create JWT token"})
 	}
 
-	handlers.GetDB().Create(user)
+	handlers.DB.Create(user)
 	return c.JSON(fiber.Map{"user": user, "token": token, "exp": exp})
 }
 
@@ -41,7 +41,7 @@ func Login_func(c *fiber.Ctx) error {
 	}
 
 	var foundUser models.User
-	handlers.GetDB().Where("username =?", user.Username).First(&foundUser)
+	handlers.DB.Where("username =?", user.Username).First(&foundUser)
 	if foundUser.ID == 0 {
 		return c.Status(401).
 			JSON(fiber.Map{"error": "Invalid username or password"})
