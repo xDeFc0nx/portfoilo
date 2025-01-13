@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/xDeFc0nx/logger-go-pkg"
 
 	"github.com/xDeFc0nx/portofoilo/handlers"
@@ -32,12 +31,6 @@ func main() {
 	app := fiber.New()
 
 	Setup_Routes(app)
-	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://127.0.0.1:3001",
-		AllowMethods:     "GET,POST,PUT,DELETE",
-		AllowHeaders:     "Origin, Content-Type, Accept",
-		AllowCredentials: true,
-	}))
 	app.Static("/assets", "./client/dist/assets", fiber.Static{
 		Compress: true, // optional: for gzip compression
 	})
