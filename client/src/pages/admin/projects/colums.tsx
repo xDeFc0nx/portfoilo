@@ -56,7 +56,7 @@ export const columns: ColumnDef<Projects>[] = [
                 onClick={async () => {
                   const projectId = row.getValue("ID");
                   const response = await fetch(
-                    `http://127.0.0.1:3000/api/deleteproject/${projectId}`,
+                    `https://nehar.online/api/deleteproject/${projectId}`,
                     {
                       method: "POST",
                       headers: {
