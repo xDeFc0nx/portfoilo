@@ -5,7 +5,7 @@ services:
     volumes:
       - ./client:/app  
     environment:
-      - VITE_API=https://nehar.online
+      - VITE_API=http://127.0.0.1:3001
     command: >
       sh -c "npm install && npm run build"  # Install dependencies and build
 
@@ -20,7 +20,7 @@ services:
       - DB_CONFIG=postgresql://user:password@db:5432/dbname
       - PORT=:3001
       - SECRET=asdasdwqe123
-      - API=https://nehar.online
+      - API=http://127.0.0.1:3001
     command: >
       sh -c "go mod tidy && go install github.com/air-verse/air@latest && air"  # Install dependencies and run air
     ports:

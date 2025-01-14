@@ -68,7 +68,7 @@ function Index() {
   // Separate state for Logo and Images
   const [logo, setLogo] = useState<File[] | null>(null);
   const [images, setImages] = useState<File[] | null>(null);
-
+ console.log(images)
   const dropZoneConfig = {
     maxFiles: 5,
     maxSize: 1024 * 1024 * 4, // 4MB max file size
@@ -90,11 +90,12 @@ function Index() {
         formData.append("Logo", logo[0]);
       }
       if (images && images.length > 0) {
-        images.forEach((image) => {
-          formData.append("Images[]", image); // Appending each image file
-        });
-      }
-      // Append the values to FormData
+      images.forEach((image, index) => {
+        const uniqueName = `${Date.now()}-${index}-${image.name}`; // Or use UUID
+         console.log(File.name);
+        formData.append("Images[]", image, uniqueName); // Append with unique name
+      });
+    }      // Append the values to FormData
       formData.append("Title", values.Title);
       formData.append("description", values.description);
       values.Technologies.forEach((tech) =>
@@ -102,9 +103,8 @@ function Index() {
       );
       values.libraries.forEach((lib) => formData.append("Libraries[]", lib));
 
-      // Append files (Logo and Images)
-
-      fetch(`${process.env.VITE_API}/apicreateproject`, {
+        console.log(formData)
+      fetch(`${process.env.VITE_API}/api/createproject`, {
         method: "POST",
         body: formData,
 
@@ -112,7 +112,7 @@ function Index() {
       }).then(async (response) => {
         if (response.ok) {
           toast.success("Project created successfully.");
-          window.location.href = `/admin/projects/`;
+          //window.location.href = `/admin/projects/`;
         } else {
           toast.error("Failed to create project. Please try again.");
         }
