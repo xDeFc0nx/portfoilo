@@ -19,7 +19,7 @@ import "@/App.css";
 
 async function getData() {
   try {
-    const response = await fetch("https://nehar.online/api/getemails", {
+    const response = await fetch(`${process.env.VITE_API}/api/getemails`, {
       method: "GET",
       credentials: "include",
     });

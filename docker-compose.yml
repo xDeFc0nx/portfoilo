@@ -1,40 +1,44 @@
 services:
   client:
-    image: node:23  # Use Node.js image for building the client
+    image: node:23
     working_dir: /app
     volumes:
-      - ./client:/app  # Mount the client directory
+      - ./client:/app  
+    environment:
+      - VITE_API=https://nehar.online
     command: >
       sh -c "npm install && npm run build"  # Install dependencies and build
 
   server:
-    image: golang:1.23  # Use Go image for the server
+    image: golang:1.23  
     working_dir: /app
     volumes:
-      - .:/app  # Mount the entire project directory for development
-      - /app/tmp  # Optional: for air to use a tmp directory
+      - .:/app
+      - /app/tmp
     environment:
       - GO_ENV=development
-      - DB_CONFIG=postgresql://user:password@db:5432/dbname  # Update with your DB credentials
+      - DB_CONFIG=postgresql://user:password@db:5432/dbname
       - PORT=:3001
       - SECRET=asdasdwqe123
+      - API=https://nehar.online
     command: >
       sh -c "go mod tidy && go install github.com/air-verse/air@latest && air"  # Install dependencies and run air
     ports:
-      - '3001:3001'  # Expose server on port 3000
+      - '3001:3001'  
     depends_on:
-      - db  # Ensure the db service is started before the server
+      - db  
+      - client
   db:
     image: postgres:latest
     restart: always
     environment:
-      - POSTGRES_USER=user  # Update with your DB username
-      - POSTGRES_PASSWORD=password  # Update with your DB password
-      - POSTGRES_DB=dbname  # Update with your DB name
+      - POSTGRES_USER=user  
+      - POSTGRES_PASSWORD=password  
+      - POSTGRES_DB=dbname  
     ports:
-      - '5432:5432'  # Expose PostgreSQL on port 5432
+      - '5432:5432'
     volumes:
-      - db_data:/var/lib/postgresql/data  # Persist data
+      - db_data:/var/lib/postgresql/data  
 
 networks:
   default:

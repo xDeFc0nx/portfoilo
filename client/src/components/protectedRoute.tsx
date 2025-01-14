@@ -10,7 +10,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("https://nehar.online/api/check-auth", {
+        const response = await fetch(`${process.env.VITE_API}/api/check-auth`, {
           method: "GET",
           credentials: "include", // Include cookies (JWT)
         });

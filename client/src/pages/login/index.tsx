@@ -10,7 +10,8 @@ function Login() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch("https://nehar.online/api/login", {
+    console.log(process.env.VITE_API)
+    fetch(`${process.env.VITE_API}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -35,7 +35,7 @@ export default function Contact() {
     formData.append("Email", values.Email);
     formData.append("Message", values.Message);
 
-    const response = await fetch("http://127.0.0.1:3000/api/sendemail", {
+    const response = await fetch("http://127.0.0.1:3000/sendemail", {
       method: "POST",
       body: formData,
     });

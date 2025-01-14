@@ -33,7 +33,7 @@ function Index() {
   useEffect(() => {
     const fetchProject = async () => {
       const response = await fetch(
-        `https://nehar.online/api/getproject/${id}`,
+        `${process.env.VITE_API}/api/getproject/${id}`,
       );
       const data = await response.json();
 

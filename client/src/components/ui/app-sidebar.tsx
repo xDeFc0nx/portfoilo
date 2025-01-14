@@ -36,7 +36,7 @@ const items = [
 
 export function AppSidebar() {
   const handleClick = async () => {
-    const response = await fetch("https://nehar.online/api/logout", {
+    const response = await fetch(`${process.env.VITE_API}/api/logout`, {
       method: "POST",
     });
 

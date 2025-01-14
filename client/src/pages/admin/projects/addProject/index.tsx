@@ -104,7 +104,7 @@ function Index() {
 
       // Append files (Logo and Images)
 
-      fetch("https://nehar.online/api/createproject", {
+      fetch(`${process.env.VITE_API}/apicreateproject`, {
         method: "POST",
         body: formData,
 

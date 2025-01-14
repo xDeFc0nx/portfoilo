@@ -23,17 +23,16 @@ func Setup_Routes(app *fiber.App) {
 	app.Post("api/deleteproject/:id", routes.Delete_Project_func)
 	app.Post("api/sendemail", routes.Create_Email_func)
 	app.Get("api/getemails", routes.Get_Emails_func)
-	app.Get("/api/check-auth", handlers.Check_Auth_func)
+	app.Get("/check-auth", handlers.Check_Auth_func)
 }
 
 func main() {
 	DB.Conn()
 
 	app := fiber.New()
-
 	Setup_Routes(app)
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "https://nehar.online",
+		AllowOrigins:     os.Getenv("API"),
 		AllowMethods:     "GET,POST,PUT,DELETE",
 		AllowHeaders:     "Content-Type,Authorization",
 		AllowCredentials: true,

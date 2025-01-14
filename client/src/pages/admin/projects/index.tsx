@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar";
 import "@/App.css";
 async function getData() {
-  const response = await fetch("https://nehar.online/api/getprojects");
+  const response = await fetch(`${process.env.VITE_API}/api/getprojects`);
   if (!response.ok) {
     throw new Error("Failed to fetch data");
   }

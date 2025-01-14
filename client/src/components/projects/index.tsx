@@ -22,7 +22,7 @@ function Index() {
   const [endIndex, setEndIndex] = useState(rowsPerPage);
 
   const fetchProjects = async () => {
-    const response = await fetch("https://nehar.online/api/getprojects");
+    const response = await fetch(`${process.env.VITE_API}/api/getprojects`);
     const data = await response.json();
     setProjects(data.Projects);
   };
