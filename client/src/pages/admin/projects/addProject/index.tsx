@@ -67,8 +67,6 @@ function Index() {
 
   // Separate state for Logo and Images
   const [logo, setLogo] = useState<File[] | null>(null);
-  const [images, setImages] = useState<File[] | null>(null);
- console.log(images)
   const dropZoneConfig = {
     maxFiles: 5,
     maxSize: 1024 * 1024 * 4, // 4MB max file size
@@ -89,13 +87,7 @@ function Index() {
       if (logo && logo.length > 0) {
         formData.append("Logo", logo[0]);
       }
-      if (images && images.length > 0) {
-      images.forEach((image, index) => {
-        const uniqueName = `${Date.now()}-${index}-${image.name}`; // Or use UUID
-         console.log(File.name);
-        formData.append("Images[]", image, uniqueName); // Append with unique name
-      });
-    }      // Append the values to FormData
+         // Append the values to FormData
       formData.append("Title", values.Title);
       formData.append("description", values.description);
       values.Technologies.forEach((tech) =>
@@ -261,54 +253,6 @@ function Index() {
                           {logo &&
                             logo.length > 0 &&
                             logo.map((file, i) => (
-                              <FileUploaderItem key={i} index={i}>
-                                <Paperclip className="h-4 w-4 stroke-current" />
-                                <span>{file.name}</span>
-                              </FileUploaderItem>
-                            ))}
-                        </FileUploaderContent>
-                      </FileUploader>
-                    </FormControl>
-                    <FormDescription>Select a file to upload.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="images"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Select Images</FormLabel>
-                    <FormControl>
-                      <FileUploader
-                        value={images}
-                        onValueChange={setImages}
-                        dropzoneOptions={dropZoneConfig}
-                        className="relative bg-background rounded-lg p-2"
-                      >
-                        <FileInput
-                          id="fileInput"
-                          className="outline-dashed outline-1 outline-slate-500"
-                        >
-                          <div className="flex items-center justify-center flex-col p-8 w-full ">
-                            <CloudUpload className="text-gray-500 w-10 h-10" />
-                            <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                              <span className="font-semibold">
-                                Click to upload
-                              </span>
-                              &nbsp; or drag and drop
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              SVG, PNG, JPG or GIF
-                            </p>
-                          </div>
-                        </FileInput>
-                        <FileUploaderContent>
-                          {images &&
-                            images.length > 0 &&
-                            images.map((file, i) => (
                               <FileUploaderItem key={i} index={i}>
                                 <Paperclip className="h-4 w-4 stroke-current" />
                                 <span>{file.name}</span>
